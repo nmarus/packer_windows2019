@@ -1,0 +1,8 @@
+{
+  "win_vm_cores": "2",
+  "win_vm_memory": "2048",
+  "win_vm_disksize": "40960",
+
+  "win_vm_os_iso_path": "/path/to/windows_server_2019.iso",
+  "win_vm_os_iso_md5": "70fec2cb1d6759108820130c2b5496da"
+}

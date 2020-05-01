@@ -1,0 +1,32 @@
+<ProductSection ovf:class="vami" ovf:instance="windows_server_2019">
+  <Info>VAMI Properties</Info>
+  <Category>Network Properties</Category>
+  <Property ovf:key="hostname" ovf:type="string" ovf:userConfigurable="true">
+    <Label>Host Name</Label>
+    <Description>Leave blank if DHCP is desired.</Description>
+  </Property>
+  <Property ovf:key="ip0" ovf:type="string" ovf:userConfigurable="true">
+    <Label>IP Address</Label>
+    <Description>The IP address for this interface. Leave blank if DHCP is desired.</Description>
+  </Property>
+  <Property ovf:key="netmask0" ovf:type="string" ovf:userConfigurable="true">
+    <Label>Netmask</Label>
+    <Description>The netmask or prefix for this interface. Leave blank if DHCP is desired.</Description>
+  </Property>
+  <Property ovf:key="gateway" ovf:type="string" ovf:userConfigurable="true">
+    <Label>Default Gateway</Label>
+    <Description>The default gateway address for this VM. Leave blank if DHCP is desired.</Description>
+  </Property>
+  <Property ovf:key="dns" ovf:type="string" ovf:userConfigurable="true">
+    <Label>DNS Servers</Label>
+    <Description>The domain name servers for this VM (comma separated). Leave blank if DHCP is desired.</Description>
+  </Property>
+  <Property ovf:key="domain" ovf:type="string" ovf:userConfigurable="true">
+    <Label>Domain Name</Label>
+    <Description>The domain name of this VM. Leave blank if DHCP is desired.</Description>
+  </Property>
+  <Property ovf:key="searchpath" ovf:type="string" ovf:userConfigurable="true">
+    <Label>Domain Search Path</Label>
+    <Description>The domain search path (comma separated domain names) for this VM. Leave blank if DHCP is desired.</Description>
+  </Property>
+</ProductSection>

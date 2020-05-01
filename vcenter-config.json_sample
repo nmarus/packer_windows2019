@@ -1,0 +1,12 @@
+{
+  "vcenter_server": "10.0.0.10",
+  "vcenter_username": "administrator@vsphere.local",
+  "vcenter_password": "password1",
+  "vcenter_host": "10.0.0.100",
+  "vcenter_datacenter": "mydatacetner",
+  "vcenter_datastore": "mydatastore",
+  "vcenter_network": "VM Network",
+  "vcenter_resource_pool": "myresourcepool",
+  "vcenter_folder": "myfolder",
+  "vcenter_cluster": "mycluster"
+}

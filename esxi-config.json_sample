@@ -1,0 +1,7 @@
+{
+  "esxi_hostname": "10.0.0.100",
+  "esxi_username": "root",
+  "esxi_password": "password11",
+  "esxi_datastore": "datastore1",
+  "esxi_network": "VM Network"
+}

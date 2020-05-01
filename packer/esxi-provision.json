@@ -1,0 +1,102 @@
+{
+  "variables": {
+    "esxi_hostname": "",
+    "esxi_username": "",
+    "esxi_password": "",
+    "esxi_network": "VM Network",
+    "esxi_datastore": "datastore1",
+
+    "win_vm_name": "{{env `PACKER_VM_NAME`}}",
+
+    "packer_path_scripts": "{{env `PACKER_SCRIPTS_DIR`}}",
+    "packer_path_unattend": "{{env `PACKER_UNATTEND_DIR`}}",
+    "packer_path_files": "{{env `PACKER_CONFIG_DIR`}}",
+    "packer_path_installs": "{{env `PACKER_INSTALLS_DIR`}}",
+
+    "win_vm_cores": "2",
+    "win_vm_memory": "2048",
+    "win_vm_disksize": "40960",
+
+    "win_vm_os_iso_path": "",
+    "win_vm_os_iso_md5": "",
+
+    "win_vm_ova_admin_password": "PaSsWoRd@1234"
+  },
+
+  "builders": [
+    {
+      "type": "vmware-iso",
+
+      "remote_type": "esx5",
+      "remote_datastore": "{{user `esxi_datastore`}}",
+      "remote_host": "{{user `esxi_hostname`}}",
+      "remote_port": "22",
+      "remote_username": "{{user `esxi_username`}}",
+      "remote_password": "{{user `esxi_password`}}",
+      "skip_validate_credentials": "true",
+      "disable_vnc": "true",
+      "format": "ovf",
+
+      "cpus": "{{user `win_vm_cores`}}",
+      "memory": "{{user `win_vm_memory`}}",
+
+      "vm_name": "{{user `win_vm_name`}}",
+
+      "version": "10",
+      "guest_os_type": "windows9srv-64",
+      "disk_size": "{{user `win_vm_disksize`}}",
+      "disk_adapter_type": "sata",
+      "disk_type_id": "thin",
+      "network_adapter_type": "e1000",
+      "vmx_data": {
+        "ethernet0.networkName": "{{user `esxi_network`}}"
+      },
+
+      "iso_url": "{{user `win_vm_os_iso_path`}}",
+      "iso_checksum": "{{user `win_vm_os_iso_md5`}}",
+      "iso_checksum_type": "md5",
+
+      "floppy_files": [
+        "{{user `packer_path_unattend`}}/autounattend.xml",
+        "{{user `packer_path_scripts`}}/ansible.ps1",
+        "{{user `packer_path_scripts`}}/vmtools.ps1",
+        "{{user `packer_path_scripts`}}/winrm.ps1",
+        "{{user `packer_path_scripts`}}/wmf3hotfix.ps1"
+      ],
+
+      "communicator": "winrm",
+      "winrm_username": "Administrator",
+      "winrm_password": "{{user `win_vm_ova_admin_password`}}",
+      "winrm_timeout": "60m",
+
+      "shutdown_command": "shutdown /s /t 60 /f /d p:4:1 /c \"Packer Shutdown\""
+    }
+  ],
+
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "{{user `packer_path_scripts`}}",
+      "destination": "c:\\__provision__\\"
+    },
+    {
+      "type": "file",
+      "source": "{{user `packer_path_installs`}}",
+      "destination": "c:\\__provision__\\"
+    },
+    {
+      "type": "file",
+      "source": "{{user `packer_path_unattend`}}/sysprep.xml",
+      "destination": "c:\\__provision__\\sysprep.xml"
+    },
+    {
+      "type": "windows-restart",
+      "pause_before": "5m",
+      "restart_command": "shutdown /r /f /t 10 /d p:4:1 /c \"Packer Restart\""
+    },
+    {
+      "type": "windows-shell",
+      "inline": ["schtasks /create /tn \"VmInit\" /sc onstart /rl highest /ru SYSTEM /tr \"powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'c:\\__provision__\\scripts\\vminit.ps1'\""]
+    }
+  ]
+}
